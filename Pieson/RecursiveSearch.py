@@ -11,8 +11,10 @@ print (originalArray);
 print (shiftedArray);
 
 def findP(someArray, len):
+    if len == 2 and someArray[0] < someArray[1]:
+        return len;
     if someArray[0] > someArray[len - 1]:
-        print("Yas");
+        return 0;
     else:
         print("recur");
         newIndex = math.ceil(len/2);
