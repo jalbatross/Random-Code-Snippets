@@ -2,6 +2,8 @@
 #with length n originally consisting of sorted decreasing
 #objects has been shifted.
 
+#This doesn't work yet
+
 import math;
 
 originalArray = [10, 9 , 8, 7, 6, 5, 4, 3, 2, 1];
@@ -21,3 +23,5 @@ def findP(someArray, len):
         findP(someArray[0:newIndex], newIndex);
 
 findP(shiftedArray,len(shiftedArray));
+
+#TODO: Get this actually working

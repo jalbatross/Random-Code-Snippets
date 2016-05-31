@@ -25,9 +25,13 @@ def iterativeP(a, len):
         else:
             mid = int(((end - start - 1) / 2) + start)
 
-    return p + 1;
+    return -1;
 
 originalArray = [10, 9 , 8, 7, 6, 5, 4, 3, 2, 1];
 shiftedArray = [3, 2, 1, 10, 9, 8, 7, 6, 5, 4];
-shiftedLongArray = [24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9 , 8 , 7, 6, 5, 4, 3, 2, 1, 33, 32, 31, 30, 29, 28, 27, 26, 25]
+shiftedLongArray = [24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 
+                    13, 12, 11, 10, 9 , 8 , 7, 6, 5, 4, 3, 2, 
+                    1, 33, 32, 31, 30, 29, 28, 27, 26, 25];
+
+                    
 print ("The array was shifted ", iterativeP(shiftedLongArray, 33) , " times");
