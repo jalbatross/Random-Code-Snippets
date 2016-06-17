@@ -153,3 +153,57 @@ def linearSubarraySum(arr):
 #     oldSum obviously it'll be greater than oldSum.
 #     Is that constant time though? NO it's j - p which is at worst case j....
 #     HMMMMMM
+#  
+# {6, -9, 1, 3, 3, -8, 2, 4, -5, 7}
+# 6 is currMax
+# i = 1
+# find max of {6, -9} given max of {6} is 6 
+# since -9 was less than max, currMax is still 6 (const time)
+# i = 2
+# find max of {6, -9, 1} given max of {6, -9} is 6
+# max has to be either 6 or {6, -9, 1} or {1} or {-9, 1}
+# can eliminate the singleton case of {1} by comparing to max (const)
+# max has to be either 6 or {6, -9, 1} or {-9, 1}
+# 
+# ====June 16, 2016======
+# I'm still working on this problem. I have no idea how to proceed!
+# Given the original set {a1, a2, a3, ..., aj}, find a maximal subset of {a1, ... , aj+1} that includes aj+1
+# in constant time, given that the maximal subset of {a1, ... ,aj} starts at some point p and ends at another point
+#  m,  1 <= p <= m <= j.
+#
+# It makes sense to start at p. But in the worst case p is simply 1, i.e. {5, -100, -1000, 3, -1000}.
+# If aj+1 is greater than or equal to zero and the maximal subset ended at j, then the maximal subset that
+# includes aj+1 is simply the old maximal subset with aj+1 included.
+#
+# That sounds pretty good. Let's see if we can eliminate all of the cases where aj+1 is greater than or
+# equal to zero.
+# Okay, let's suppose that m < j. For example, the maximal subset of the following: {-1, -50, 1, 2, 7, 9, -100, -200, 3, 3, 5}
+# starts at a3= 1 and ends at a6=4. Let's say aj+1 = 10, so we've got {-1, -50, 1, 2, 7, 9, -100, -200, 3, 3, 5, 10}
+# Now we've got to find the maximal subarray which includes aj+1=10. From observation we can clearly see that it's {3, 3, 5, 10} = 23
+# This doesn't include the old maximum, {1, 2, 7, 9} = 19.
+#
+# How could a computer do this in constant time? We know:
+# --The old maximum subarray was 19, and that started at a3 = 1 and ended at a6 = 9.
+# --If we included some element(s) from a7 = -100...a11 = 5, that decreased the sum. i.e., the net effect of adding element(s) after max was
+#    negative. In other words, we could express the array as: {stuff before max, 1, 2, 7, 9, negative stuff, 10}
+# At this point the quandary is that the maximal subarray that includes aj+1 doesn't have the old maximum. In fact, it has some of the
+# "negative stuff". It's not immediately clear to me if or how rephrasing the question in this way would help.
+#
+# --We're given that aj+1 >= 0. 
+# --The sum of the 'negative stuff' is at most -1, otherwise we'd include it. But some of it could be good. How do we find the good part(s)
+#   in constant time? 
+# --We need to include aj+1.
+# I'd like to just cycle through the space between the last element of the previous max and aj+1, but at worst that's about j+1 time, which
+# clearly isn't constant.
+# 
+# So what do we do? How can the previous max be used to make this constant?
+# In our current example, we have to choose between:
+# {maxSub, -100, -200, 3, 3, 5, 10}
+# {        -100, -200, 3, 3, 5, 10}
+# {              -200, 3, 3, 5, 10}
+# {                    3, 3, 5, 10}
+# {                       3, 5, 10}
+# {                          5, 10}
+# {                             10}
+# It doesn't make sense to include anything before maxSub, because those elements should't help.
+# I can easily find the max subarray in j time. But that doesn't help.
