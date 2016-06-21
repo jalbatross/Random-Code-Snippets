@@ -10,9 +10,9 @@ def bruteMax(A):
     sum = A[0];
     low = 0;
     high = len(A) - 1;
-    for i in range(0, len(A)-1):
+    for i in range(0, len(A)):
         sum=A[i];
-        for j in range(i+1, len(A) -1):
+        for j in range(i+1, len(A)):
             sum += A[j];
             if sum >= max:
                 max = sum;

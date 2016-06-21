@@ -1,15 +1,5 @@
 # Nonrecursive linear time algorithm for Maximum subarray sum problem
-# 4.1-5 in CLRS
-
-def linearSubarraySum(arr):
-    var sum = 0
-    var max = float('-inf')
-    low, high = 0, 0
-    for i in range(0, len(arr)):
-        sum += a[i]
-        if (sum >= max):
-            high = i
-            max = sum
+# 4.1-5 in CLR
 
 #scratchwork:
 # {3, 1, -5,0, -2, 6,7, 9, 2, -11, 4}
@@ -207,3 +197,67 @@ def linearSubarraySum(arr):
 # {                             10}
 # It doesn't make sense to include anything before maxSub, because those elements should't help.
 # I can easily find the max subarray in j time. But that doesn't help.
+#====June 21, 2016====
+# Still have no idea. Going to try to implement something, because thinking about it is not elping me at all.
+
+import random
+import time
+
+def linearSubarray(arr):
+    max = arr[0]
+    jSum = 0
+    low = 0
+    high = 0
+    jLow = 0
+    jMax = float('-inf')
+    for i in range(0, len(arr)):
+        #print("  i is: ", i, " Lo, Hi, Max: ", low, high, max)
+        #print("  i val is: ", arr[i])
+        jMax = float('-inf')
+        jSum = 0
+        #find max including j+1
+        for j in range (i, high, -1):
+       #     print("     j is: ", j )
+            jSum += arr[j]
+       #     print ("     curr jSum = " , jSum, " and jMax = ", jMax)
+            if jSum >= jMax:
+       #         print("       jSum = ", jSum, " which is >= curr jMax = ", jMax)
+                jMax = jSum
+                jLow = j
+       #         print("       jLow = ",jLow, " new jMax: ", jMax )
+        if (jLow == high+1) and (max + jMax) >= jMax:
+       #     print("       jMax was union: ", max+jMax)
+            jMax = max + jMax
+            jLow = low
+        if jMax >= max:
+       #     print("         new max is jMax: ", jMax)
+            low = jLow
+            high = i
+            max = jMax
+    return (low, high, max)
+
+myRandoms = []
+
+sizes = [10, 100, 1000, 10000, 100000, 1000000]
+timer, start = 0, 0
+sizeCounter = 0
+
+while (sizeCounter < len(sizes)):
+    myRandoms = []
+    while (len(myRandoms) < sizes[sizeCounter]):
+        myRandoms.append(random.uniform(-100,100))
+    start = time.clock()
+    linearSubarray(myRandoms)
+    timer = time.clock() - start
+    print("Took time: ", timer, " for input of size: ", sizes[sizeCounter])
+    sizeCounter += 1
+
+
+print ("Low, high, max: ", linearSubarray(myRandoms))
+
+
+
+
+
+
+
