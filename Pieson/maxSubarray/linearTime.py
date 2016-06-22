@@ -205,44 +205,47 @@ import time
 
 def linearSubarray(arr):
     max = arr[0]
-    jSum = 0
-    low = 0
-    high = 0
+    jMax = 0
     jLow = 0
-    jMax = float('-inf')
-    for i in range(0, len(arr)):
-        #print("  i is: ", i, " Lo, Hi, Max: ", low, high, max)
-        #print("  i val is: ", arr[i])
-        jMax = float('-inf')
-        jSum = 0
-        #find max including j+1
-        for j in range (i, high, -1):
-       #     print("     j is: ", j )
-            jSum += arr[j]
-       #     print ("     curr jSum = " , jSum, " and jMax = ", jMax)
-            if jSum >= jMax:
-       #         print("       jSum = ", jSum, " which is >= curr jMax = ", jMax)
-                jMax = jSum
-                jLow = j
-       #         print("       jLow = ",jLow, " new jMax: ", jMax )
-        if (jLow == high+1) and (max + jMax) >= jMax:
-       #     print("       jMax was union: ", max+jMax)
-            jMax = max + jMax
+    stuff = 0
+    low, high = 0, 0
+    gap, gapOpen, gapClose = 0, -1, 0
+    for i in range(len(arr)):
+        #print(" i is: ", i, " and val is: ", arr[i])
+        
+        if i == low:
+            continue
+        if i == high + 1 and arr[i] >= 0:
+            jMax = arr[i] + max
+        else:
+            gap += arr[i]
+            gapClose = i
+            if gapOpen == -1:
+                gapOpen = i
+            #print("   gapOpen, gapClose, gapVal: ", gapOpen, ", ", gapClose, ", ", gap)
+        if gapOpen > -1 and gap >= 0:
+            jMax = max + gap
             jLow = low
-        if jMax >= max:
-       #     print("         new max is jMax: ", jMax)
-            low = jLow
-            high = i
+        if arr[i] > jMax:
+            jMax = arr[i]
+            jLow = i
+        if jMax > max:
             max = jMax
+            high = i
+            low = jLow
+            gap = 0
+            gapOpen = -1
+        #print("  lo, hi, max: ", low, " ",  high, " ",  max)
     return (low, high, max)
+myArr = [15, 19, 3, -11, -12, -50, 1, 5, 80, 1, 3, -100, -10, 5]
 
 myRandoms = []
 
-sizes = [10, 100, 1000, 10000, 100000, 1000000]
+sizes = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
 timer, start = 0, 0
 sizeCounter = 0
 
-while (sizeCounter < len(sizes)):
+while (sizeCounter < len(sizes) - 2):
     myRandoms = []
     while (len(myRandoms) < sizes[sizeCounter]):
         myRandoms.append(random.uniform(-100,100))
@@ -253,7 +256,8 @@ while (sizeCounter < len(sizes)):
     sizeCounter += 1
 
 
-print ("Low, high, max: ", linearSubarray(myRandoms))
+
+print ("Low, high, max: ", linearSubarray(myArr))
 
 
 
