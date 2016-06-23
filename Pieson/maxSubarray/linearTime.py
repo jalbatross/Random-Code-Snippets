@@ -210,8 +210,9 @@ def linearSubarray(arr):
     stuff = 0
     low, high = 0, 0
     gap, gapOpen, gapClose = 0, -1, 0
+    posGap, posGapOpen, posGapClose = 0, -1, -1
     for i in range(len(arr)):
-        #print(" i is: ", i, " and val is: ", arr[i])
+        #print("\n--------\n i is: ", i, " and val is: ", arr[i])
         
         if i == low:
             continue
@@ -222,13 +223,30 @@ def linearSubarray(arr):
             gapClose = i
             if gapOpen == -1:
                 gapOpen = i
+            if arr[i] >= 0 or posGapOpen > -1:
+                posGap += arr[i]
+                posGapClose = i
+                if posGapOpen == -1:
+                    posGapOpen = i
+                if posGap < 0:
+                    posGapOpen = -1
+                    posGapClose = -1
+                    posGap = 0
             #print("   gapOpen, gapClose, gapVal: ", gapOpen, ", ", gapClose, ", ", gap)
+            #print("   lastPosGapOpen, posGapClose, posGapVal: ", posGapOpen, ", ", posGapClose, ", ", posGap)
         if gapOpen > -1 and gap >= 0:
             jMax = max + gap
             jLow = low
         if arr[i] > jMax:
+            #print ("     arr[i] > jMax (" , arr[i], " > ", jMax, " )")
             jMax = arr[i]
             jLow = i
+        if posGap > jMax:
+            jMax = posGap
+            jLow = posGapOpen
+            posGapOpen = -1
+            posGapClose = -1
+            posGap = 0
         if jMax > max:
             max = jMax
             high = i
@@ -237,18 +255,18 @@ def linearSubarray(arr):
             gapOpen = -1
         #print("  lo, hi, max: ", low, " ",  high, " ",  max)
     return (low, high, max)
-myArr = [15, 19, 3, -11, -12, -50, 1, 5, 80, 1, 3, -100, -10, 5]
+myArr = [15, 19, 3, -11, -12, -50, 1, 5, 80, 1, 3, -100, -10, 5, -2, -1, 4, 8, -13, 12, -10, 5, 8, 16, 10, 9, 19, 20, 32, -50, 99, -500]
 
 myRandoms = []
 
-sizes = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
+sizes = [10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
 timer, start = 0, 0
 sizeCounter = 0
 
 while (sizeCounter < len(sizes) - 2):
     myRandoms = []
     while (len(myRandoms) < sizes[sizeCounter]):
-        myRandoms.append(random.uniform(-100,100))
+        myRandoms.append(random.randint(-100,100))
     start = time.clock()
     linearSubarray(myRandoms)
     timer = time.clock() - start
@@ -257,10 +275,14 @@ while (sizeCounter < len(sizes) - 2):
 
 
 
-print ("Low, high, max: ", linearSubarray(myArr))
+print ("Low, high, max: ", linearSubarray(myRandoms))
 
 
-
+### June 23, 2016 ####
+# Can't believe I finally got this working! Finished the final touches (previous positive gap) at Starbucks
+# yesterday around 8-9 PM. Onto the rest of the book. I had a feeling it was this approach but it seemed so
+# "dumb" - I thought that there was a more elegant/complex solution. This gets the job done and it's linear.
+# That's about the best I can hope for! 
 
 
 
